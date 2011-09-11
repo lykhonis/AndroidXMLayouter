@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+    <extension point="org.eclipse.ui.popupMenus">
+        <objectContribution
+            id="Plugin.EditorContribution"
+            objectClass="org.eclipse.ui.IEditorInput"
+            nameFilter="*.*">
+            <action
+                  class="com.vlad.actions.GenerateXML"
+                  id="Plugin.Converter"
+                  label="Generate Android XML"
+                  menubarPath="additions">
+            </action>
+        </objectContribution>
+    </extension>
+</plugin>
