@@ -1,4 +1,4 @@
-package com.vlad.actions;
+package com.vlad;
 
 import java.io.StringWriter;
 import java.text.ParseException;
@@ -11,25 +11,19 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IObjectActionDelegate;
-import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import com.vlad.Activator;
 import com.vlad.parser.ParseItem;
 import com.vlad.parser.Parser;
 
-public class GenerateXML implements IObjectActionDelegate {
+public class Converter {
 
-	@Override
-	public void run(IAction action) {
+	public static void convertInsideCurrentEditor() {
 		IEditorPart editorPart = Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage()
 				.getActiveEditor();
 
@@ -65,8 +59,8 @@ public class GenerateXML implements IObjectActionDelegate {
 			e.printStackTrace();
 		}
 	}
-
-	private void generateXMLStructure(Document document, Element rootElement, ParseItem item) throws ParseException {
+	
+	private static void generateXMLStructure(Document document, Element rootElement, ParseItem item) throws ParseException {
 		Element element = document.createElement(item.getName());
 		if (rootElement != null) {
 			rootElement.appendChild(element);
@@ -82,13 +76,5 @@ public class GenerateXML implements IObjectActionDelegate {
 				generateXMLStructure(document, element, child);
 			}
 		}
-	}
-
-	@Override
-	public void selectionChanged(IAction action, ISelection selection) {
-	}
-
-	@Override
-	public void setActivePart(IAction action, IWorkbenchPart targetPart) {
 	}
 }

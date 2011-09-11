@@ -6,3 +6,7 @@ bin/com/vlad/parser/ParseItem.class
 bin/com/vlad/actions/GenerateXML.class
 
 bin/com/vlad/Activator.class
+
+bin/com/vlad/action/GenerateXML.class
+
+bin/com/vlad/Converter.class

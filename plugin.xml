@@ -3,12 +3,12 @@
 <plugin>
     <extension point="org.eclipse.ui.popupMenus">
         <objectContribution
-            id="Plugin.EditorContribution"
+            id="com.vlad.androidxmlayouter.editor"
             objectClass="org.eclipse.ui.IEditorInput"
             nameFilter="*.*">
             <action
-                  class="com.vlad.actions.GenerateXML"
-                  id="Plugin.Converter"
+                  class="com.vlad.action.GenerateXML"
+                  id="com.vlad.androidxmlayouter.action.GenerateXML"
                   label="Generate Android XML"
                   menubarPath="additions">
             </action>
