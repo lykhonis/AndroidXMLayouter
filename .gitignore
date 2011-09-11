@@ -1,2 +1,8 @@
 
 bin/com/vlad/parser/Parser.class
+
+bin/com/vlad/parser/ParseItem.class
+
+bin/com/vlad/actions/GenerateXML.class
+
+bin/com/vlad/Activator.class
