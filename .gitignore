@@ -10,3 +10,5 @@ bin/com/vlad/Activator.class
 bin/com/vlad/action/GenerateXML.class
 
 bin/com/vlad/Converter.class
+
+bin/com/vlad/ActiveEditor.class

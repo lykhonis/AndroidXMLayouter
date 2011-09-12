@@ -5,16 +5,15 @@ import java.text.ParseException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.eclipse.jface.text.IDocument;
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.texteditor.IDocumentProvider;
-import org.eclipse.ui.texteditor.ITextEditor;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -23,44 +22,29 @@ import com.vlad.parser.Parser;
 
 public class Converter {
 
-	public static void convertInsideCurrentEditor() {
-		IEditorPart editorPart = Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage()
-				.getActiveEditor();
+	public static String generateXML(String lispLikeString) throws ParseException, ParserConfigurationException,
+			TransformerFactoryConfigurationError, TransformerException {
+		Parser parser = new Parser(new StringBuilder(lispLikeString));
 
-		ITextEditor editor;
-		if (editorPart instanceof ITextEditor) {
-			editor = (ITextEditor) editorPart;
-		} else {
-			editor = (ITextEditor) editorPart.getAdapter(ITextEditor.class);
-		}
+		DocumentBuilder xmlDocumentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+		Document xmlDocument = xmlDocumentBuilder.newDocument();
+		xmlDocument.setXmlVersion("1.0");
+		xmlDocument.setXmlStandalone(true);
 
-		IDocumentProvider documentProvider = editor.getDocumentProvider();
-		IDocument document = documentProvider.getDocument(editor.getEditorInput());
+		generateXMLStructure(xmlDocument, null, parser.getRootItem());
 
-		try {
-			Parser parser = new Parser(new StringBuilder(document.get()));
+		Transformer transformer = TransformerFactory.newInstance().newTransformer();
+		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 
-			DocumentBuilder xmlDocumentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-			Document xmlDocument = xmlDocumentBuilder.newDocument();
-			xmlDocument.setXmlVersion("1.0");
-			xmlDocument.setXmlStandalone(true);
+		StreamResult result = new StreamResult(new StringWriter());
+		DOMSource source = new DOMSource(xmlDocument);
+		transformer.transform(source, result);
 
-			generateXMLStructure(xmlDocument, null, parser.getRootItem());
-
-			Transformer transformer = TransformerFactory.newInstance().newTransformer();
-			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-
-			StreamResult result = new StreamResult(new StringWriter());
-			DOMSource source = new DOMSource(xmlDocument);
-			transformer.transform(source, result);
-
-			document.set(result.getWriter().toString());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		return result.getWriter().toString();
 	}
-	
-	private static void generateXMLStructure(Document document, Element rootElement, ParseItem item) throws ParseException {
+
+	private static void generateXMLStructure(Document document, Element rootElement, ParseItem item)
+			throws ParseException {
 		Element element = document.createElement(item.getName());
 		if (rootElement != null) {
 			rootElement.appendChild(element);

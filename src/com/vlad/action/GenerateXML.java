@@ -6,12 +6,18 @@ import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 
 import com.vlad.Converter;
+import com.vlad.ActiveEditor;
 
 public class GenerateXML implements IObjectActionDelegate {
 
 	@Override
 	public void run(IAction action) {
-		Converter.convertInsideCurrentEditor();
+		try {
+			ActiveEditor activeEditor = ActiveEditor.getInstance();
+			activeEditor.setContent(Converter.generateXML(activeEditor.getContent()));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
