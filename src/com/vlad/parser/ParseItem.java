@@ -43,7 +43,7 @@ public class ParseItem {
 				return mData.substring(mStartPosition + 1, i);
 			}
 		}
-		throw new ParseException("Invalid format: ", mStartPosition);
+		throw new ParseException("Invalid format", mStartPosition);
 	}
 	
 	public String getValue() throws ParseException {
@@ -54,6 +54,6 @@ public class ParseItem {
 				return mData.substring(i + 1, mEndPosition).trim();
 			}
 		}
-		throw new ParseException("Invalid format: ", mStartPosition);
+		throw new ParseException("Invalid format", mStartPosition);
 	}
 }

@@ -21,10 +21,7 @@ public class Parser {
 			char currentCharacter = data.charAt(i);
 
 			if (currentCharacter == '(') {
-				if (item != null) {
-					lastItem = item;
-				}
-				
+				lastItem = item;
 				item = new ParseItem(data, i, lastItem);
 				
 				if (lastItem != null) {
@@ -32,7 +29,7 @@ public class Parser {
 				}
 			} else if (currentCharacter == ')') {
 				if (item == null) {
-					throw new ParseException("Invalid format: ", i);
+					throw new ParseException("Invalid format", i);
 				}
 				
 				item.setEndPosition(i);
