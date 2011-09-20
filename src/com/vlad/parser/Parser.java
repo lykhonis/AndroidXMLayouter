@@ -17,10 +17,15 @@ public class Parser {
 	private ParseItem parse(StringBuilder data) throws ParseException {
 		ParseItem lastItem = null;
 		ParseItem item = null;
+		
 		for (int i = 0; i < data.length(); i++) {
 			char currentCharacter = data.charAt(i);
 
 			if (currentCharacter == '(') {
+				if (i > 0 && data.charAt(i - 1) == '\\') {
+					continue;
+				}
+				
 				lastItem = item;
 				item = new ParseItem(data, i, lastItem);
 				
@@ -28,6 +33,10 @@ public class Parser {
 					lastItem.getChildren().add(item);
 				}
 			} else if (currentCharacter == ')') {
+				if (i > 0 && data.charAt(i - 1) == '\\') {
+					continue;
+				}
+				
 				if (item == null) {
 					throw new ParseException("Invalid format", i);
 				}
@@ -40,6 +49,7 @@ public class Parser {
 				}
 			}
 		}
+		
 		return item;
 	}
 }
