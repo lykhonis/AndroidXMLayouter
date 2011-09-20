@@ -43,10 +43,12 @@ public class Parser {
 				
 				item.setEndPosition(i);
 				
-				if (lastItem != null) {
-					item = lastItem;
-					lastItem = item.getParent();
+				if (lastItem == null) {
+					break;
 				}
+				
+				item = lastItem;
+				lastItem = item.getParent();
 			}
 		}
 		
